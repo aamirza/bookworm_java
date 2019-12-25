@@ -1,25 +1,25 @@
 package com.bookworm;
 
 public class Book extends iBook {
-    private final int pages;
+    private final int totalPages;
     private int pagesComplete;
 
 
-    public Book(String title, int pages) {
+    public Book(String title, int totalPages) {
         super(title);
-        this.pages = pages;
+        this.totalPages = totalPages;
         this.pagesComplete = 0;
     }
 
-    public Book(String title, int pages, int pagesComplete) {
+    public Book(String title, int totalPages, int pagesComplete) {
         super(title);
-        this.pages = pages;
+        this.totalPages = totalPages;
         this.pagesComplete = pagesComplete;
         this.complete = this.isComplete();
     }
 
-    public int getPages() {
-        return pages;
+    public int getTotalPages() {
+        return totalPages;
     }
 
     public int getPagesComplete() {
@@ -32,11 +32,11 @@ public class Book extends iBook {
 
     @Override
     public boolean isComplete() {
-        return pagesComplete >= pages;
+        return pagesComplete >= totalPages;
     }
 
     @Override
     public double percentComplete() {
-        return (double)pagesComplete / (double)pages;
+        return (double)pagesComplete / (double) totalPages;
     }
 }
