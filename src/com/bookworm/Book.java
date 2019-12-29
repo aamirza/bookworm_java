@@ -2,19 +2,13 @@ package com.bookworm;
 
 public class Book extends iBook {
     private final int totalPages;
-    private int pagesComplete;
-
-
-    public Book(String title, int totalPages) {
-        super(title);
-        this.totalPages = totalPages;
-        this.pagesComplete = 0;
-    }
+    private int pagesComplete = 0;
 
     public Book(String title, int totalPages, int pagesComplete) {
         super(title);
+        format = BOOK;
         this.totalPages = totalPages;
-        this.pagesComplete = pagesComplete;
+        this.setPagesComplete(pagesComplete);
         this.complete = this.isComplete();
     }
 
