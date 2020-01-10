@@ -4,31 +4,32 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class Audiobook extends iBook {
-    private final int length;
-    private int amountListened = 0;
-    private SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm:ss");
-    private SimpleDateFormat minuteFormat = new SimpleDateFormat("mm:ss");
+    private static final SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm:ss");
+    private static final SimpleDateFormat minuteFormat = new SimpleDateFormat("mm:ss");
 
-    public Audiobook(String title, String length) throws ParseException {
-        this(title, length, "0:00:00");
+
+    Audiobook(String title, String length) throws ParseException {
+        this(title, (int) (hourFormat.parse(length).getTime() / 1000));
     }
 
-    public Audiobook(String title, String length, int amountListened) throws ParseException {
-        this(title, length, "0:00:00");
-        this.amountListened = amountListened;
+    Audiobook(String title, int length, String amountListened) throws ParseException {
+        this(title, length, (int) (hourFormat.parse(amountListened).getTime() / 1000));
     }
 
-    public Audiobook(String title, String length, String amountListened) throws ParseException {
-        super(title);
-        format = AUDIOBOOK;
-        int length1;
-        try {
-            length1 = (int) (hourFormat.parse(length).getTime() / 1000);
-        } catch (ParseException e) {
-            length1 = (int) (minuteFormat.parse(length).getTime() / 1000);
-        }
-        this.length = length1;
-        this.setAmountListened(amountListened);
+    Audiobook(String title, String length, String amountListened) throws ParseException {
+        this(title, length, (int) (hourFormat.parse(amountListened).getTime() / 1000));
+    }
+
+    Audiobook(String title, String length, int amountListened) throws ParseException {
+        this(title, (int) (hourFormat.parse(length).getTime() / 1000), amountListened);
+    }
+
+    Audiobook(String title, int length) {
+        this(title, length, 0);
+    }
+
+    Audiobook(String title, int length, int amountListened) {
+        super(title, 2, length, amountListened);
     }
 
     private static String secondsToFormattedTime(int timeInSeconds) {
@@ -38,41 +39,35 @@ public class Audiobook extends iBook {
         return String.format("%d:%d:%d", hours, minutes, seconds);
     }
 
-    public int getAmountListened() {
-        return amountListened;
+    private int timeToSeconds(String formattedTime) throws ParseException {
+        int length;
+        try {
+            length = (int) (hourFormat.parse(formattedTime).getTime() / 1000);
+        } catch (ParseException e) {
+            length = (int) (minuteFormat.parse(formattedTime).getTime() / 1000);
+        }
+        return length;
     }
 
-    public String getFormattedAmountListened() {
-       return secondsToFormattedTime(amountListened);
+    public String getAmountListened() {
+        return secondsToFormattedTime(pagesComplete);
     }
 
     public void setAmountListened(String amountListened) throws ParseException {
         try {
-            this.amountListened = (int) (hourFormat.parse(amountListened).getTime() / 1000);
+            this.pagesComplete = (int) (hourFormat.parse(amountListened).getTime() / 1000);
         } catch (ParseException e) {
-            this.amountListened = (int) (minuteFormat.parse(amountListened).getTime() / 1000);
+            this.pagesComplete = (int) (minuteFormat.parse(amountListened).getTime() / 1000);
         }
-    }
-
-    public void setAmountListened(int amountListened) {
-        this.amountListened = amountListened;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public String getFormattedLength() {
-        return secondsToFormattedTime(length);
     }
 
     @Override
     public boolean isComplete() {
-        return amountListened >= length;
+        return pagesComplete >= totalPages;
     }
 
     @Override
     public double percentComplete() {
-        return (double) amountListened / (double) length;
+        return (double) (pagesComplete / totalPages);
     }
 }

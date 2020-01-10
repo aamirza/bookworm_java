@@ -1,31 +1,26 @@
 package com.bookworm;
 
 public class Ebook extends iBook {
-    private static final int totalPages = 100;
-
-    private int percentComplete = 0;
 
     public Ebook(String title, int percentComplete) {
-        super(title);
-        format = EBOOK;
-        this.setPercentComplete(percentComplete);
+        super(title, 1, 100, percentComplete);
     }
 
     public int getPercentComplete() {
-        return percentComplete;
+        return pagesComplete;
     }
 
     public void setPercentComplete(int percentComplete) {
-        this.percentComplete = percentComplete;
+        this.setPagesComplete(percentComplete);
     }
 
     @Override
     public boolean isComplete() {
-        return percentComplete == 100;
+        return pagesComplete == 100;
     }
 
     @Override
     public double percentComplete() {
-        return percentComplete;
+        return pagesComplete;
     }
 }
