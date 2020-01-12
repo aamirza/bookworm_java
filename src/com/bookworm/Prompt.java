@@ -8,7 +8,7 @@ public class Prompt {
     private iBook[] books;
     private int goal = 0;
 
-    private int scanIntBetween(String message, String errorMessage, int minimum, int maximum) {
+    private static int scanIntBetween(String message, String errorMessage, int minimum, int maximum) {
         int value = minimum - 1;
         Scanner input = new Scanner(System.in);
         System.out.println(message + " >>> ");
@@ -24,12 +24,40 @@ public class Prompt {
                 System.out.printf(">>> ");
             }
         }
+        input.nextLine();
         return value;
     }
 
-    private int scanIntWithMinimum(String message, int minimum) {
+    private static int scanIntWithMinimum(String message, int minimum) {
         String errorMessage = "Value must be greater than " + minimum;
         return scanIntBetween(message, errorMessage, minimum, Integer.MAX_VALUE);
+    }
+
+    private static String scanString(String message) {
+        String output;
+        Scanner input = new Scanner(System.in);
+        System.out.println(message + "\n>>> ");
+        output = input.nextLine();
+        return output;
+    }
+
+    private static boolean askYesOrNo(String question) {
+        return askYesOrNo(question, false);
+    }
+
+    private static boolean askYesOrNo(String question, boolean defaultAnswer) {
+        Scanner input = new Scanner(System.in);
+        String answer = "o";
+        System.out.println(question + " >>>");
+        answer = input.nextLine();
+        switch (answer.toUpperCase()) {
+            case "Y": case "YES":
+                return true;
+            case "N": case "NO":
+                return false;
+            default:
+                return defaultAnswer;
+        }
     }
 
 
@@ -45,35 +73,48 @@ public class Prompt {
     // If book or audiobook, ask for the length.
     // Ask if book is complete or not
     // If not, ask how much is complete
-    // Probably best to make an integer entering method.
     public void addIBook() {
+        String title = setTitle();
+        if (!title.equals("")) {
+            boolean complete = askYesOrNo("Have you finished reading this book? [yes/NO]");
+            String format = setFormat();
+            switch (format) {
+                case "book":
+                    addBook(title, complete);
+                    break;
+                case "ebook":
+                    addEbook(title, complete);
+                    break;
+                case "audiobook":
+                    addAudiobook(title, complete);
+                    break;
+            }
+        }
+    }
+
+    private void addBook(String title, boolean complete) {
+
+    }
+
+    private void addEbook(String title, boolean complete) {
+
+    }
+
+    private void addAudiobook(String title, boolean complete) {
+
+    }
+
+    private String setTitle() {
+        return scanString("What is the title of the book? Leave blank to abort.");
+    }
+
+    private String setFormat() {
         System.out.println("What kind of book would you like to add? Type 0 to quit.");
         HashMap<Integer, String> formats = iBook.getFormats();
         for (int i = 1; i <= formats.size(); i++) {
             System.out.printf("[%d] %s%n", i,  formats.get(i-1));
         }
         int choice = scanIntBetween("", "Choose one of the numebrs above, type 0 to quit.", 0, 3);
-        if (choice != 0) {
-            switch (formats.get(choice - 1)) {
-                case "book":
-                    addBook();
-                    break;
-                case "ebook":
-                    addEbook();
-                    break;
-                case "audiobook":
-                    addAudiobook();
-                    break;
-            }
-        }
-    }
-
-    private void addAudiobook() {
-    }
-
-    private void addEbook() {
-    }
-
-    private void addBook() {
+        return choice != 0 ? formats.get(choice-1) : "";
     }
 }
