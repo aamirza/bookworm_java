@@ -25,16 +25,16 @@ public abstract class iBook {
         this.pagesComplete = pagesComplete;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public static HashMap<Integer, String> getFormats() {
         HashMap<Integer, String> formats = new HashMap<>();
         formats.put(0, "book");
         formats.put(1, "ebook");
         formats.put(2, "audiobook");
         return formats;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public String getFormat() {
@@ -55,6 +55,9 @@ public abstract class iBook {
         }
     }
 
+    public double percentComplete() {
+        return (double) (pagesComplete / totalPages);
+    }
+
     public abstract boolean isComplete();
-    public abstract double percentComplete();
 }

@@ -14,9 +14,4 @@ public class Book extends iBook {
     public boolean isComplete() {
         return pagesComplete >= totalPages;
     }
-
-    @Override
-    public double percentComplete() {
-        return (double)pagesComplete / (double) totalPages;
-    }
 }

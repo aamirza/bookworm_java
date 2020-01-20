@@ -4,8 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class Audiobook extends iBook {
-    private static final SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm:ss");
-    private static final SimpleDateFormat minuteFormat = new SimpleDateFormat("mm:ss");
+    public static final SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm:ss");
+    public static final SimpleDateFormat minuteFormat = new SimpleDateFormat("mm:ss");
 
 
     Audiobook(String title, String length) throws ParseException {
@@ -32,14 +32,14 @@ public class Audiobook extends iBook {
         super(title, 2, length, amountListened);
     }
 
-    private static String secondsToFormattedTime(int timeInSeconds) {
+    public static String secondsToFormattedTime(int timeInSeconds) {
         int hours = timeInSeconds / 3600;
         int minutes = (timeInSeconds - (hours*3600)) / 60;
         int seconds = timeInSeconds % 60;
         return String.format("%d:%d:%d", hours, minutes, seconds);
     }
 
-    private int timeToSeconds(String formattedTime) throws ParseException {
+    public static int timeToSeconds(String formattedTime) throws ParseException {
         int length;
         try {
             length = (int) (hourFormat.parse(formattedTime).getTime() / 1000);
@@ -64,10 +64,5 @@ public class Audiobook extends iBook {
     @Override
     public boolean isComplete() {
         return pagesComplete >= totalPages;
-    }
-
-    @Override
-    public double percentComplete() {
-        return (double) (pagesComplete / totalPages);
     }
 }
