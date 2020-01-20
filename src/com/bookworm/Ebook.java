@@ -18,9 +18,4 @@ public class Ebook extends iBook {
     public boolean isComplete() {
         return pagesComplete == 100;
     }
-
-    @Override
-    public double percentComplete() {
-        return pagesComplete;
-    }
 }
